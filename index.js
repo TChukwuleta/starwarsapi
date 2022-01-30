@@ -1,0 +1,18 @@
+const express = require("express")
+const app = express()
+require("dotenv").config()
+
+// Importing all necessary routes
+const movieRoutes = require('./routes/movieRoute')
+const characterRoutes = require('./routes/characterRoutes')
+
+app.use(express.json())
+
+// Calling the endpoints
+app.use('/movies', movieRoutes)
+app.use('/characters', characterRoutes)
+
+const port = 2022 || process.env.port
+app.listen(port, () => {
+    console.log(`Hey star fans... This server is up and running on port ${port}`)
+})
