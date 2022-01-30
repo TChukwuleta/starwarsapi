@@ -1,5 +1,7 @@
-const axios = require("axios")
+const axios = require("axios");
+const res = require("express/lib/response");
 
+// Get all movies and return values in ways specified
 const getMovies = async (req, res) => {
     try {
         const result = await axios.get('https://swapi.py4e.com/api/films')
@@ -27,6 +29,15 @@ const getMovies = async (req, res) => {
     }
 }
 
+const getSingleMovie = async (id) => {
+    const result = await axios.get(`https://swapi.py4e.com/api/films/${id}/`)
+    if(result.data == null){
+        return res.status(400).json({ message: "No movie exist with that Id"})
+    }
+    return result.data
+} 
+
 module.exports = {
-    getMovies
+    getMovies,
+    getSingleMovie
 }

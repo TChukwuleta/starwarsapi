@@ -3,6 +3,6 @@ const characterController = require('../controllers/charactersController')
 const router = express()
 
 // Get all movies
-router.get('/', characterController.getCharacters)
+router.get('/:id', characterController.getCharacters)
 
 module.exports = router
