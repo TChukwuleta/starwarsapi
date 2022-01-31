@@ -1,4 +1,5 @@
-const db  = require('../config/db')
+// const db  = require('../config/db')
+const Comment = require("../models/Comment")
 const Joi = require("joi")
 const movieUtils = require("../middlewares/movies")
 const utils = require("../middlewares/utils")
@@ -6,7 +7,6 @@ const utils = require("../middlewares/utils")
 
 const commentSchema = Joi.object({
     comment: Joi.string().max(500).required(),
-    // movieId: Joi.number().integer().required()
     movieId: Joi.required()
 
 })
@@ -23,37 +23,45 @@ const addComment = async (req, res) => {
 
     // Get movie
     const allMovies = await movieUtils.getAllMovies()
-    // console.log(allMovies)
     const findMovie = utils.checkMovieExist(allMovies, movieId)
     if(!findMovie){
         return res.status(400).json({ message: `No movie with id: ${movieId} exist` })
     }
-    console.log(findMovie)
+
     // Add comment to the DB
-    db.query(`INSERT INTO "commentdata" (comment, public_ip, movie_id) VALUES ($1, $2, $3)`, [comment, ip, parseInt(movieId) ], (error, result) => {
-        if(error){
-            console.log(error.message)
-            return res.status(400).json({ message: "An error occured while adding comment" })
-        }
-        res.status(201).json({ message: `Comment: "${comment}" has been added successfully` })
+    await Comment.create({
+        movie_id: movieId,
+        comment,
+        public_ip: ip  
     })
+    return res.status(201).json({ message: `Comment: "${comment}" has been added successfully` })
 }
 
-const getCommentByMovie = async (req, res) => {
+const getCommentByMovie = async (req, res) => { 
     const movieId = req.params.movieId
-    db.query(`SELECT * FROM "commentdata" WHERE movie_id = $1`, [movieId], (error, result) => {
-        if(error){
-            console.log(error.message)
-            return res.status(400).json({ message: "An error occured while adding comment" })
-        }
-        // const comments = result.sort((a, b) => {
-        //     return (a.comment) - (b.comment);
-        // });
-        res.status(200).json({ message: result.rows })
+    const { rows, count } = await Comment.findAndCountAll({
+        where: {
+            movie_id: movieId 
+        },
+        order: [
+            ['createdAt', 'DESC']
+        ]
     })
+    // console.log(count)
+    // console.log(rows)
+    if(count <= 0){
+        return res.status(400).json({ message: "Eh yaa.. Try again later, you hear?"})
+    }
+    let comments = []
+    comments.push({
+        MovieId: movieId,
+        Comments: rows
+    })
+
+    return res.status(200).json({ message: comments })    
 }
 
 module.exports = {
     addComment,
     getCommentByMovie
-}
+} 
