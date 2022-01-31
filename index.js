@@ -21,7 +21,7 @@ app.get('*', (req, res) => {
     res.status(404).json({ message: "Guess you are lost. Just head to the home page" })
 })
 
-const port = 2022 || process.env.port
+const port = 2022 || process.env.PORT
 app.listen(port, () => {
     console.log(`Hey star fans... This server is up and running on port ${port}`)
 }) 
