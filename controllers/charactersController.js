@@ -6,6 +6,7 @@ const getCharacters = async (req, res) => {
     const movieId = req.params.id
     const { gender, sortby } = req.query
     console.log(gender)
+    console.log(sortby)
 
     // Get title of movie selected
     const movieResult = await characterUtils.getMovie(movieId)
@@ -20,7 +21,7 @@ const getCharacters = async (req, res) => {
         }
     }
     if(sortby){
-        if(sortby !== "name" || sortby !== "gender" || sortby !== "height"){
+        if(sortby !== "name" && sortby !== "gender" && sortby !== "height"){
             return res.status(400).json({ message: "Incorrect sort parameter. You can only sort by gender, height or name"})
         }
     } 
@@ -28,7 +29,11 @@ const getCharacters = async (req, res) => {
 
     // Get all characters belonging to a particular movie
     const characters = await characterUtils.getMovieCharacters(movieId)
+    // If gender is passed in the query, filter characters by gender
     const filteredCharacters = gender ? utils.filterCharactersByGender(characters, gender) : characters
+    // If sort parameters is passed in the query, sort characters by the parameters
+    const sortedCharacters = sortby ? utils.sortedByFxn(filteredCharacters, sortby) : filteredCharacters
+    console.log(sortedCharacters)
     
     // Calculate the total height of characters
     const totalHeightInCm = filteredCharacters.reduce((total, character) => {
@@ -43,6 +48,7 @@ const getCharacters = async (req, res) => {
         data: {
             MovieTitle: title,
             FilteredBy: gender,
+            SortedBy : sortby,
             Characters: filteredCharacters
         },
         metadata: {

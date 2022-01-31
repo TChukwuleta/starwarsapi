@@ -1,39 +1,29 @@
-const axios = require("axios")
 
-const getSingleMovie = async (id) => {
-    const result = await axios.get(`https://swapi.py4e.com/api/films/${id}/`)
-    const data = result.data
-    return data
-} 
-
-async function fetchPeople() {
-    let res = await axios.get('https://swapi.py4e.com/api/people/');
-    return res.data.results;
+const getNum = (val) => {
+    const len = val.length
+    const arr = val.split('/')
+    return val[len - 1] === '/' ? arr[arr.length - 2] : arr[arr.length - 1]
 }
 
-
-const showPeople = async (movie) => {
-    const people = await fetchPeople();
-    const matchingPeople = [];
-    const amovie = await movie
-    console.log(amovie.title)
-    console.log('char count: ', amovie.characters.length);
-    console.log('peopel count: ', people.length);
-    amovie.characters.forEach((movieCharacter) => {
-        people.forEach((person) => {
-            const isMatching = person.url === movieCharacter;
-            if (isMatching) {
-                matchingPeople.push(person);
-            }
-        });
-    });
-    return matchingPeople;
+const getMovieId = (url) => {
+    const len = url.length
+    const arr = url.split('/')
+    return url[len - 1] === '/' ? arr[arr.length - 2] : arr[arr.length - 1]
 }
 
-const getData = async (id) => {
-    const all = await showPeople(getSingleMovie(id))
-    return all
+const pattern = /(?<-\/)(?<id>\d+)/
+
+const idFromURL = (url) => {
+    const id = parseInt(url.match(pattern)?.group?.id)
+
+    if(isNaN(id)){
+        throw new Error("Error getting Id from URL")
+    }
+    return id
 }
 
+let str = "https://swapi.py4e.com/api/people/101/"
 
-console.log(getData(2))
+// let Val = str.split(str.length-2)
+
+console.log(idFromURL(str))

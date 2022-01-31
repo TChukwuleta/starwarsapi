@@ -16,10 +16,57 @@ const filterCharactersByGender = (characters, gender) => {
 }
 
 // Sorted By
-const sortedByFxn = () => {}
+const sortedByFxn = (characters, sortby) => {
+
+    switch (sortby) {
+    case 'name':
+        sortByKey(characters, 'name')
+        break;
+    case 'gender':
+        sortByKey(characters, 'gender')
+    case 'height':
+        // sortByKey(characters, 'name')
+        characters.sort(function(a,b){
+            return a.height - b.height;
+        });
+        break;
+    default:
+        console.log(`Sorry, You cannot sort by this value`);
+    }
+}
+
+//  Function to sort by key
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+      var x = a[key];
+      var y = b[key];
+      console.log((x < y) ? -1 : ((x > y) ? 1 : 0))
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0)); 
+    });
+}  
+
+const getMovieId = (url) => {
+    const len = url.length
+    const arr = url.split('/')
+    return url[len - 1] === '/' ? arr[arr.length - 2] : arr[arr.length - 1]
+}
+
+const checkMovieExist = (movies, movieId) => {
+    const result = movies.find(movie => {
+        const id = getMovieId(movie.url)
+        if(id == movieId) {
+            return true;
+        } 
+        return false; 
+    });
+    return result;
+};
 
 
 module.exports = {
     newHeightFormat,
-    filterCharactersByGender
+    filterCharactersByGender,
+    sortedByFxn,
+    getMovieId,
+    checkMovieExist
 }
