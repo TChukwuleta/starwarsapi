@@ -11,7 +11,7 @@ app.use(express.json())
 
 // Calling the endpoints
 app.use('/movies', movieRoutes)
-// app.use('/characters', characterRoutes)
+app.use('/characters', characterRoutes)
 // app.use('/comments', commentRoutes)
 app.get('/', (req, res) => {
     res.json({ message: "Welcome Aboard" })
