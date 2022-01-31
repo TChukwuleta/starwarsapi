@@ -2,7 +2,7 @@ const axios = require("axios");
 const res = require("express/lib/response");
 
 // Get all movies and return values in ways specified
-const getMovies = async (req, res) => {
+const getMovies = async (req, res) => { 
     try {
         const result = await axios.get('https://swapi.py4e.com/api/films')
 

@@ -8,6 +8,9 @@ Creating a small set of rest API endpoints using NodeJS that can be used for lis
 ## LOCAL LINK OF THE PROJECT
 ### [GET] http://localhost:2022
 
+## PUBLISHED POSTMAN DOCUMENTATION
+### https://documenter.getpostman.com/view/17832863/UVeDrmXr
+
 ## API Endpoints
 
 ##### Getting all movies in the required format
