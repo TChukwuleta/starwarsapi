@@ -13,6 +13,13 @@ app.use(express.json())
 app.use('/movies', movieRoutes)
 app.use('/characters', characterRoutes)
 app.use('/comments', commentRoutes)
+app.get('/', (req, res) => {
+    res.json({ message: "Welcome Aboard" })
+})
+
+app.get('*', (req, res) => {
+    res.status(404).json({ message: "Guess you are lost. Just head to the home page" })
+})
 
 const port = 2022 || process.env.port
 app.listen(port, () => {
