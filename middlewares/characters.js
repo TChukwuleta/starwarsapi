@@ -36,8 +36,3 @@ exports.getMovieCharacters = async (id) => {
     const all = await showCharacters(getSingleMovie(id))
     return all
 }
-
-exports.getMovie = async (id) => {
-    const result = await axios.get(`https://swapi.py4e.com/api/films/${id}/`)
-    return result.data
-} 

@@ -1,5 +1,7 @@
 const axios = require("axios");
 const res = require("express/lib/response");
+const utils = require("../middlewares/utils")
+const Comment = require('../models/Comment')
 
 // Get all movies and return values in ways specified
 const getMovies = async (req, res) => { 
@@ -12,15 +14,24 @@ const getMovies = async (req, res) => {
 
         let movies = []
 
-        allMovies.forEach(output => {
-            movies.push({
-                Title: output.title,
-                OpeningCrawl: output.opening_crawl,
-                ReleaseDate: output.release_date,
-                CharacterList: output.characters,
-                CommentCount: []
+        for(const film of allMovies){
+            const movieId = utils.getMovieId(film.url)
+            const { count } = await Comment.findAndCountAll({
+                where: {
+                    movie_id: movieId 
+                }, 
+                order: [
+                    ['createdAt', 'DESC']
+                ]
             })
-        });
+            movies.push({
+                Title: film.title,
+                OpeningCrawl: film.opening_crawl,
+                ReleaseDate: film.release_date,
+                CommentCount: count
+            })
+        }
+
         console.log('Go check out the movies')
         return res.status(200).json(movies)
     } catch (error) {

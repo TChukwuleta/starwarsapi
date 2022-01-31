@@ -3,18 +3,13 @@ const characterUtils = require('../middlewares/characters')
 const utils = require('../middlewares/utils')
 
 const getCharacters = async (req, res) => {
-    const movieId = req.params.id
+    const movieId = req.params.id 
     const { gender, sortby } = req.query
-    console.log(gender)
-    console.log(sortby)
 
     // Get title of movie selected
-    const movieResult = await characterUtils.getMovie(movieId)
+    const movieResult = await utils.getMovie(movieId)
     const title = movieResult.title
 
-    // if(!gender && !sortby) {
-    //     // return res.status(200).json(result.data.results)
-    // }
     if(gender){
         if(gender !== 'male' && gender !== 'female' && gender !== 'n/a'){
             return res.status(400).json({ message: "Incorrect gender value selected. Gender value can only be male, female or n/a"})
@@ -28,7 +23,7 @@ const getCharacters = async (req, res) => {
 
 
     // Get all characters belonging to a particular movie
-    const characters = await characterUtils.getMovieCharacters(movieId)
+    const characters = await utils.getMovieCharacters(movieId)
     // If gender is passed in the query, filter characters by gender
     const filteredCharacters = gender ? utils.filterCharactersByGender(characters, gender) : characters
     // If sort parameters is passed in the query, sort characters by the parameters
@@ -49,7 +44,7 @@ const getCharacters = async (req, res) => {
             MovieTitle: title,
             FilteredBy: gender,
             SortedBy : sortby,
-            Characters: filteredCharacters
+            Characters: sortedCharacters
         },
         metadata: {
             TotalCharacters: characters.length,

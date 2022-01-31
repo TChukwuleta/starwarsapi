@@ -1,4 +1,5 @@
 const axios = require("axios")
+const Comment = require('../models/Comment')
 
 // Change the height displayed from just height in cm, to also include feets and inches
 const newHeightFormat = (height) => {
@@ -45,12 +46,30 @@ function sortByKey(array, key) {
     });
 }  
 
+// Extract a movieId from the movie url
 const getMovieId = (url) => {
     const len = url.length
     const arr = url.split('/')
     return url[len - 1] === '/' ? arr[arr.length - 2] : arr[arr.length - 1]
 }
 
+const idFromURL = (url) => {
+    const id = parseInt(url.match(/\d\/$/)[0].replace("/",""))
+
+    if(isNaN(id)){
+        throw new Error("Error getting Id from URL")
+    }
+    return id
+}
+
+
+// Get single movie
+const getMovie = async (id) => {
+    const result = await axios.get(`https://swapi.py4e.com/api/films/${id}/`)
+    return result.data
+} 
+
+// Check and find if a particular movie exists
 const checkMovieExist = (movies, movieId) => {
     const result = movies.find(movie => {
         const id = getMovieId(movie.url)
@@ -63,10 +82,42 @@ const checkMovieExist = (movies, movieId) => {
 };
 
 
+// Getting single movie characters
+// Getting all the characters
+async function fetchPeople() {
+    let res = await axios.get('https://swapi.py4e.com/api/people/');
+    return res.data.results;
+}
+
+// Getting all the characters for a particular movie
+const showCharacters = async (movie) => {
+    const people = await fetchPeople();
+    const matchingPeople = [];
+    const amovie = await movie
+    amovie.characters.forEach((movieCharacter) => {
+        people.forEach((person) => {
+            const isMatching = person.url === movieCharacter;
+            if (isMatching) {
+                matchingPeople.push(person);
+            }
+        });
+
+    });
+    return matchingPeople;
+}
+
+const getMovieCharacters = async (id) => {
+    const all = await showCharacters(getMovie(id))
+    return all
+}
+
 module.exports = {
     newHeightFormat,
     filterCharactersByGender,
     sortedByFxn,
     getMovieId,
-    checkMovieExist
+    checkMovieExist,
+    idFromURL,
+    getMovie,
+    getMovieCharacters
 }

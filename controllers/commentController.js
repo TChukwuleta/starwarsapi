@@ -54,6 +54,7 @@ const getCommentByMovie = async (req, res) => {
     }
     let comments = []
     comments.push({
+        NoOfComment: count,
         MovieId: movieId,
         Comments: rows
     })
