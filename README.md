@@ -55,4 +55,4 @@ This endpoint takes two payload properties:
 
 1 => Represent the ID of the movie of which you want to get all the comments.
 
-![Getting comments by movie Id](https://drive.google.com/file/d/1B1Ng3PqDzK1qs46Hm8ZqjWFEThN17yAz/view?usp=sharing)
+![Getting comments by movie Id](https://drive.google.com/uc?export=view&id=1B1Ng3PqDzK1qs46Hm8ZqjWFEThN17yAz)
