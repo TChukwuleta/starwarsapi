@@ -37,8 +37,6 @@ Currently there are 3 genders by which you can filter the characters list by: ma
 
 ![filter by gender](https://drive.google.com/uc?export=view&id=1roWpmpxlDbJFdbiPR7uDAHc-4jrGyPnd)
 
-#### For the following endpoints, they are not available on the live link, but you can test it on local as they are working fine on local. Working to fix this ASAP.
-
 ##### Adding a comment for a particular movie
 #### [POST] https://metacare-swapitest.herokuapp.com/comments/add
 

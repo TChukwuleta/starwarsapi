@@ -15,7 +15,7 @@ const getMovies = async (req, res) => {
         let movies = []
 
         for(const film of allMovies){
-            const movieId = utils.getMovieId(film.url)
+            const movieId = utils.idFromURL(film.url)
             const { count } = await Comment.findAndCountAll({
                 where: {
                     movie_id: movieId 

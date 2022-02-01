@@ -1,5 +1,4 @@
 const axios = require("axios")
-const characterUtils = require('../middlewares/characters')
 const utils = require('../middlewares/utils')
 
 const getCharacters = async (req, res) => {
@@ -28,7 +27,6 @@ const getCharacters = async (req, res) => {
     const filteredCharacters = gender ? utils.filterCharactersByGender(characters, gender) : characters
     // If sort parameters is passed in the query, sort characters by the parameters
     const sortedCharacters = sortby ? utils.sortedByFxn(filteredCharacters, sortby) : filteredCharacters
-    console.log(sortedCharacters)
     
     // Calculate the total height of characters
     const totalHeightInCm = filteredCharacters.reduce((total, character) => {
