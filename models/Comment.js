@@ -7,7 +7,7 @@ const Comment = sequelize.define('comments', {
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
-    },
+    },    
     movie_id: {
         type: Sequelize.INTEGER,
         allowNull: false

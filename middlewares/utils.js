@@ -68,7 +68,7 @@ const getMovie = async (id) => {
     const result = await axios.get(`https://swapi.py4e.com/api/films/${id}/`)
     return result.data
 } 
-
+       
 // Check and find if a particular movie exists
 const checkMovieExist = (movies, movieId) => {
     const result = movies.find(movie => {
